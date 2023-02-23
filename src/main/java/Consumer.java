@@ -1,7 +1,14 @@
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
+
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
+import com.rabbitmq.client.Delivery;
+
+import com.google.gson.Gson; 
+
 
 public class Consumer {
 
@@ -20,8 +27,13 @@ public class Consumer {
 		System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
 		DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+// Désérialise les données reçues pour récupérer l'objet EnvironmentCaptor
+			Gson gson = new Gson();
+
 			String message = new String(delivery.getBody(), "UTF-8");
-			System.out.println(" [x] Received '" + delivery.getEnvelope().getRoutingKey() + "':'" + message + "'");
+			EnvironmentCaptor nosCapteurs = gson.fromJson(message, EnvironmentCaptor.class); 
+
+			System.out.println(" [x] Received '" + delivery.getEnvelope().getRoutingKey() + "':'" + nosCapteurs.toString() + "'");
 		};
 
 		channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
