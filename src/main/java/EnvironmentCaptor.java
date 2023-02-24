@@ -9,27 +9,23 @@ public class EnvironmentCaptor implements Serializable{
 
     public EnvironmentCaptor(int hour){
         this.hour = hour; 
+        createBrightness();
     }
 
     public void createBrightness() {
             if (this.hour >= 7 && this.hour <= 20){
-                this.brightness = 100 ;
-            }else if(this.hour > 20 && this.hour < 7){
+                this.brightness = 100;
+            } else if(this.hour >= 21 || this.hour < 7) {
                 this.brightness = 15;
-            }else if(this.hour >= 22 && this.hour <= 6){
-                this.brightness = 5 ;
-            }
-            try{
-                TimeUnit.SECONDS.sleep(5);
-            }catch (Exception e){
-                System.out.println("erreur sleep");
+            } else if(this.hour >= 7 && this.hour < 22) {
+                this.brightness = 5;
             }
         
     }
 
     public int getBrightness() { return this.brightness; }
 
-    public String toString() { return "Luminosité : "+this.brightness;}
+    public String toString() { return "Luminosité : "+this.brightness+". Heure : "+this.hour;}
 
     public int getHour() { return this.hour; }
 
