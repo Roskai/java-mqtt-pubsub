@@ -12,7 +12,7 @@ CONTAINER_RUNTIME_NAME="$CURRENT_DIR-openjdk-11-pubsub-producer"
 
 docker run -d -it --rm \
     -v "$WORKDING_DIR"/app:/app \
-    --net host \
+    --net java-mqtt-pubsub-broker \
     --name $CONTAINER_RUNTIME_NAME \
     openjdk:11
 

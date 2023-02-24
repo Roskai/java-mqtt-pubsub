@@ -20,7 +20,7 @@ docker run -d -it --rm \
 docker exec -it  \
     -w /app \
     $CONTAINER_RUNTIME_NAME \
-    /bin/bash -c "java -cp /app/app-jar-with-dependencies.jar Consumer" || {
+    /bin/bash -c "java -cp /app/app-jar-with-dependencies.jar LampeConsumer" || {
         docker stop $CONTAINER_RUNTIME_NAME; exit 1
     }
 

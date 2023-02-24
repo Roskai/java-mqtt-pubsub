@@ -11,41 +11,41 @@ import com.google.gson.Gson;
 
 public class Producer {
 
-	private static final String TOPIC_ENV = "Env";
-	private static final String ROUTING_KEY = "#my_route";
+    private static final String TOPIC_ENV = "Env";
+    private static final String ROUTING_KEY = "#my_route";
 
-	
 
-	public static void main(String[] argv) throws Exception {
-		
-		int hour =1; 
 
-		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost("java-mqtt-pubsub-broker");
-		try (Connection connection = factory.newConnection(); Channel channel = connection.createChannel()) {
-			channel.exchangeDeclare(TOPIC_ENV, "fanout");
+    public static void main(String[] argv) throws Exception {
 
-			for (int i=1; i<=24; i++){
-                
+        int hour =1; 
 
-			EnvironmentCaptor obj = new EnvironmentCaptor(hour); 
-			
-			Gson gson = new Gson();
-			String message = gson.toJson(obj);
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost("java-mqtt-pubsub-broker");
+        try (Connection connection = factory.newConnection(); Channel channel = connection.createChannel()) {
+            channel.exchangeDeclare(TOPIC_ENV, "fanout");
 
-			System.out.println("Routing key : " + ROUTING_KEY + " ; message : " + obj.toString());
+            for (int i=1; i<=24; i++){
 
-			channel.basicPublish(TOPIC_ENV, ROUTING_KEY, null, message.getBytes("UTF-8"));
-			System.out.println(" [x] Sent '" + obj.toString() + "'");
 
-			    try{
-                    TimeUnit.SECONDS.sleep(10);
+                EnvironmentCaptor obj = new EnvironmentCaptor(hour); 
+
+                Gson gson = new Gson();
+                String message = gson.toJson(obj);
+
+                System.out.println("Routing key : " + ROUTING_KEY + " ; message : " + obj.toString());
+
+                channel.basicPublish(TOPIC_ENV, ROUTING_KEY, null, message.getBytes("UTF-8"));
+                System.out.println(" [x] Sent '" + obj.toString() + "'");
+
+                try{
+                    TimeUnit.SECONDS.sleep(3);
                 }catch (Exception e){
                     System.out.println("erreur sleep");
                 }
-			hour = hour+1;
-			}
-		}
-	}
+                hour = hour+1;
+            }
+        }
+    }
 
 }
