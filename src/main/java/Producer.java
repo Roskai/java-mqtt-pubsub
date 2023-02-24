@@ -11,7 +11,7 @@ import com.google.gson.Gson;
 
 public class Producer {
 
-	private static final String EXCHANGE_NAME = "logs";
+	private static final String TOPIC_ENV = "Env";
 	private static final String ROUTING_KEY = "#my_route";
 
 	
@@ -21,9 +21,9 @@ public class Producer {
 		int hour =1; 
 
 		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost("localhost");
+		factory.setHost("java-mqtt-pubsub-broker");
 		try (Connection connection = factory.newConnection(); Channel channel = connection.createChannel()) {
-			channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+			channel.exchangeDeclare(TOPIC_ENV, "fanout");
 
 			for (int i=1; i<=24; i++){
                 
@@ -35,7 +35,7 @@ public class Producer {
 
 			System.out.println("Routing key : " + ROUTING_KEY + " ; message : " + obj.toString());
 
-			channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, message.getBytes("UTF-8"));
+			channel.basicPublish(TOPIC_ENV, ROUTING_KEY, null, message.getBytes("UTF-8"));
 			System.out.println(" [x] Sent '" + obj.toString() + "'");
 
 			    try{

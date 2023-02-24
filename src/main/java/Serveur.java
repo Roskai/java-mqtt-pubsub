@@ -5,9 +5,9 @@ public class Serveur {
         boolean state; 
 
         if (hour >= 20 && hour <7 || brightness <= 10){
-            this.state = true; 
+            state = true; 
         }else {
-            this.state = fasle; 
+            state = false; 
         }
         return state; 
     }
